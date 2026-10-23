@@ -1,6 +1,6 @@
 const birthdayDetails = {
   name: "Chandrika Kondamudi",
-  sender: "Your Name",
+  sender: "Craig Marowa",
   memories: [
     {
       title: "Your kind of magic",
@@ -22,7 +22,7 @@ const birthdayDetails = {
     "Your laugh is an excellent reason to call someone today."
   ],
   closingMessage:
-    "I'm really glad we became friends. I hope the year ahead brings you new things to look forward to, plenty of reasons to laugh, and people who remind you how appreciated you are.",
+    "I'm really glad we became friends. My best wishes for a year filled with new things to look forward to, plenty of reasons to laugh, and people who remind you how appreciated you are.",
   signoff: "Happy birthday — with love,"
 };
 
@@ -38,9 +38,72 @@ const musicToggle = document.querySelector("#music-toggle");
 const musicLabel = document.querySelector("#music-label");
 const musicIcon = document.querySelector("#music-icon");
 const musicStatus = document.querySelector("#music-status");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+if (prefersReducedMotion.matches) {
+  birthdayMusic.removeAttribute("autoplay");
+  birthdayMusic.pause();
+}
 
 const ambientGlitter = document.querySelector("#ambient-glitter");
 const glitterColors = ["#e7b66e", "#eaa8a0", "#dcd2ec", "#cbd9cb"];
+const balloonLayer = document.querySelector("#balloon-pop-layer");
+const balloonWishToast = document.querySelector("#balloon-wish-toast");
+const birthdayWishes = [
+  "Best wishes for a year full of laughter and lovely surprises!",
+  "May today bring you all the happiness you deserve!",
+  "Here's to bright days, big smiles, and wonderful new memories!",
+  "Wishing you a birthday as lovely and special as you are!",
+  "May this next year be your happiest one yet!"
+];
+const balloonColors = ["#eaa8a0", "#d4a7c8", "#e7bd76", "#a9c3b0", "#9cb9d0"];
+let balloonWishIndex = 0;
+let balloonToastTimer;
+
+const balloonPositions = [
+  { side: "left", top: "35%", size: "54px" },
+  { side: "right", top: "27%", size: "48px" },
+  { side: "left", top: "70%", size: "46px" },
+  { side: "right", top: "61%", size: "56px" },
+  { side: "right", top: "84%", size: "42px" }
+];
+
+balloonPositions.forEach((position, index) => {
+  const balloon = document.createElement("button");
+  balloon.className = "pop-balloon";
+  balloon.type = "button";
+  balloon.setAttribute("aria-label", "Pop a birthday balloon");
+  balloon.style.setProperty(`--${position.side}`, index % 2 === 0 ? "2%" : "3%");
+  balloon.style.setProperty("--top", position.top);
+  balloon.style.setProperty("--size", position.size);
+  balloon.style.setProperty("--balloon-color", balloonColors[index % balloonColors.length]);
+  balloon.style.setProperty("--float-delay", `${index * -0.8}s`);
+  balloon.innerHTML = '<span aria-hidden="true">✦</span>';
+
+  balloon.addEventListener("click", () => {
+    if (balloon.classList.contains("is-popped")) {
+      return;
+    }
+
+    balloon.classList.add("is-popped");
+    balloon.setAttribute("aria-label", "Balloon popped. Pop it again!");
+    balloonWishToast.textContent = birthdayWishes[balloonWishIndex % birthdayWishes.length];
+    balloonWishToast.dataset.visible = "true";
+    balloonWishIndex += 1;
+
+    window.clearTimeout(balloonToastTimer);
+    balloonToastTimer = window.setTimeout(() => {
+      delete balloonWishToast.dataset.visible;
+    }, 3200);
+
+    window.setTimeout(() => {
+      balloon.classList.remove("is-popped");
+      balloon.setAttribute("aria-label", "Pop a birthday balloon");
+    }, 900);
+  });
+
+  balloonLayer.append(balloon);
+});
 
 for (let index = 0; index < 24; index += 1) {
   const particle = document.createElement("span");
@@ -60,16 +123,26 @@ closingMessage.textContent = birthdayDetails.closingMessage;
 signoff.textContent = `${birthdayDetails.signoff} ${birthdayDetails.sender}`;
 
 musicToggle.addEventListener("click", async () => {
-  if (!birthdayMusic.paused) {
-    birthdayMusic.pause();
+  if (!birthdayMusic.muted && !birthdayMusic.paused) {
+    birthdayMusic.muted = true;
+    musicToggle.setAttribute("aria-pressed", "false");
+    musicLabel.textContent = "Play birthday music";
+    musicIcon.textContent = "▶";
+    musicStatus.textContent = "The birthday video continues silently.";
     return;
   }
 
   musicStatus.textContent = "Loading birthday music...";
 
   try {
+    birthdayMusic.muted = false;
     await birthdayMusic.play();
+    musicToggle.setAttribute("aria-pressed", "true");
+    musicLabel.textContent = "Pause birthday music";
+    musicIcon.textContent = "Ⅱ";
+    musicStatus.textContent = "Birthday music is playing.";
   } catch (error) {
+    birthdayMusic.muted = true;
     musicToggle.setAttribute("aria-pressed", "false");
     musicLabel.textContent = "Play birthday music";
     musicIcon.textContent = "▶";
@@ -79,22 +152,25 @@ musicToggle.addEventListener("click", async () => {
 });
 
 birthdayMusic.addEventListener("playing", () => {
-  musicToggle.setAttribute("aria-pressed", "true");
-  musicLabel.textContent = "Pause birthday music";
-  musicIcon.textContent = "Ⅱ";
-  musicStatus.textContent = "Birthday music is playing.";
+  if (!birthdayMusic.muted) {
+    musicToggle.setAttribute("aria-pressed", "true");
+    musicLabel.textContent = "Pause birthday music";
+    musicIcon.textContent = "Ⅱ";
+    musicStatus.textContent = "Birthday music is playing.";
+  }
 });
 
 birthdayMusic.addEventListener("pause", () => {
   musicToggle.setAttribute("aria-pressed", "false");
   musicLabel.textContent = "Play birthday music";
   musicIcon.textContent = "▶";
-  if (!birthdayMusic.ended) {
+  if (!birthdayMusic.ended && !birthdayMusic.muted) {
     musicStatus.textContent = "Birthday music is paused.";
   }
 });
 
 birthdayMusic.addEventListener("ended", () => {
+  birthdayMusic.muted = true;
   musicToggle.setAttribute("aria-pressed", "false");
   musicLabel.textContent = "Play birthday music";
   musicIcon.textContent = "▶";
@@ -102,10 +178,11 @@ birthdayMusic.addEventListener("ended", () => {
 });
 
 birthdayMusic.addEventListener("error", () => {
+  birthdayMusic.muted = true;
   musicToggle.setAttribute("aria-pressed", "false");
   musicLabel.textContent = "Play birthday music";
   musicIcon.textContent = "▶";
-  musicStatus.textContent = "Birthday music couldn't be loaded. Check the MP4 file and try again.";
+  musicStatus.textContent = "The birthday video couldn't be loaded. Check the MP4 file and try again.";
 });
 
 for (const [index, memory] of birthdayDetails.memories.entries()) {
@@ -187,6 +264,7 @@ document.querySelectorAll(".moodboard-open").forEach((button) => {
     const image = button.querySelector("img");
     const caption = button.closest("figure").querySelector("figcaption");
     viewerImage.src = image.currentSrc || image.src;
+    viewerImage.alt = image.alt;
     viewerCaption.textContent = caption.textContent;
     addViewerCelebration();
     imageViewer.showModal();

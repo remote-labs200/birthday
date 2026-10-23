@@ -10,6 +10,11 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="birthday-video-backdrop" aria-hidden="true">
+      <video id="birthday-music" autoplay muted loop playsinline preload="metadata" poster="assets/birthday-video-poster.jpg">
+        <source src="assets/background-music-birthday.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="ambient-glitter" id="ambient-glitter" aria-hidden="true"></div>
     <div class="page-shell">
       <header class="topbar">
@@ -71,44 +76,44 @@
                 <p class="eyebrow"><span class="eyebrow-dot"></span> A little visual confetti</p>
                 <h3 id="moodboard-title">Birthday moodboard</h3>
               </div>
-              <p class="moodboard-note">Decorative portraits from the assets folder — these aren't photos of Chandrika.</p>
+              <p class="moodboard-note">A few favorite snapshots of Chandrika, gathered just for her birthday.</p>
             </div>
             <div class="moodboard-grid">
               <figure class="moodboard-photo moodboard-photo-tall">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: Color, light and a little sparkle">
-                  <img src="assets/alrick.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika smiling at her desk">
+                  <img src="assets/IMG-20251020-WA0081.jpg" alt="Chandrika smiling at her desk" loading="lazy" decoding="async">
                 </button>
-                <figcaption>Color, light &amp; a little sparkle</figcaption>
+                <figcaption>A little focus, a little sparkle</figcaption>
               </figure>
               <figure class="moodboard-photo moodboard-photo-offset">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: A sunny-day kind of feeling">
-                  <img src="assets/amin.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika in a sun hat">
+                  <img src="assets/IMG-20251020-WA0082.jpg" alt="Chandrika in a sun hat" loading="lazy" decoding="async">
                 </button>
                 <figcaption>A sunny-day kind of feeling</figcaption>
               </figure>
               <figure class="moodboard-photo">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: Something lovely in the everyday">
-                  <img src="assets/christina.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika relaxing in a cafe">
+                  <img src="assets/IMG-20251020-WA0083.jpg" alt="Chandrika relaxing in a cafe" loading="lazy" decoding="async">
                 </button>
                 <figcaption>Something lovely in the everyday</figcaption>
               </figure>
               <figure class="moodboard-photo moodboard-photo-offset">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: Make room for bright beginnings">
-                  <img src="assets/daniil.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika in a bright pink outfit">
+                  <img src="assets/IMG-20251020-WA0084.jpg" alt="Chandrika in a bright pink outfit" loading="lazy" decoding="async">
                 </button>
-                <figcaption>Make room for bright beginnings</figcaption>
+                <figcaption>Bright as your birthday</figcaption>
               </figure>
               <figure class="moodboard-photo moodboard-photo-tall">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: Soft moments, big birthday energy">
-                  <img src="assets/hale.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika holding a flower">
+                  <img src="assets/IMG-20251023-WA0030.jpg" alt="Chandrika holding a flower" loading="lazy" decoding="async">
                 </button>
-                <figcaption>Soft moments, big birthday energy</figcaption>
+                <figcaption>A little beauty in the everyday</figcaption>
               </figure>
               <figure class="moodboard-photo moodboard-photo-offset">
-                <button class="moodboard-open" type="button" aria-label="View decorative portrait: A little extra joy for today">
-                  <img src="assets/marco.jpg" alt="" loading="lazy" decoding="async">
+                <button class="moodboard-open" type="button" aria-label="View photo: Chandrika in a red outfit">
+                  <img src="assets/IMG-20251023-WA0033.jpg" alt="Chandrika in a red outfit" loading="lazy" decoding="async">
                 </button>
-                <figcaption>A little extra joy for today</figcaption>
+                <figcaption>Here's to feeling like yourself</figcaption>
               </figure>
             </div>
           </section>
@@ -147,9 +152,8 @@
         <figcaption class="viewer-caption" id="viewer-caption"></figcaption>
       </figure>
     </dialog>
-    <video class="soundtrack-source" id="birthday-music" preload="none" playsinline aria-hidden="true" tabindex="-1">
-      <source src="assets/background-music-birthday.mp4" type="video/mp4">
-    </video>
+    <div class="balloon-pop-layer" id="balloon-pop-layer" aria-label="Birthday balloons to pop"></div>
+    <p class="balloon-wish-toast" id="balloon-wish-toast" role="status" aria-live="polite"></p>
     <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
   </body>
 </html>
