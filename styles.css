@@ -122,6 +122,67 @@ a:focus-visible {
   letter-spacing: 0.03em;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.music-toggle {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 11px;
+  border: 1px solid rgba(40, 36, 43, 0.15);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 600;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.music-toggle:hover {
+  border-color: var(--rose);
+  background: white;
+}
+
+.music-toggle[aria-pressed="true"] {
+  border-color: var(--rose-dark);
+  background: #f4ebe2;
+}
+
+.music-icon {
+  color: var(--rose-dark);
+  font-size: 11px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.soundtrack-source {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .hero {
   min-height: 550px;
   display: grid;
@@ -837,6 +898,17 @@ h2 {
     font-size: 9px;
   }
 
+  .topbar-actions {
+    gap: 9px;
+  }
+
+  .music-toggle {
+    min-height: 32px;
+    gap: 6px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
   .hero {
     min-height: 0;
     grid-template-columns: 1fr;
@@ -903,6 +975,10 @@ h2 {
 }
 
 @media (max-width: 480px) {
+  .topbar-note {
+    display: none;
+  }
+
   .memory-grid {
     grid-template-columns: 1fr;
   }

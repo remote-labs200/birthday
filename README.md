@@ -1,6 +1,6 @@
 # A little birthday surprise
 
-A small, responsive birthday page made with plain HTML, CSS, and JavaScript. It has no build step or paid services. Subtle falling glitter decorates the page without blocking clicks or adding page overflow. The birthday moodboard opens images in a full-screen viewer with animated balloons and sparkles; close it with the × button or Escape.
+A small, responsive birthday page made with plain HTML, CSS, and JavaScript. It has no build step or paid services. Subtle falling glitter decorates the page without blocking clicks or adding page overflow. The optional birthday soundtrack uses the audio track in `assets/background-music-birthday.mp4`; the video stays hidden, and playback starts only when the visitor presses the music button. The birthday moodboard opens images in a full-screen viewer with animated balloons and sparkles; close it with the × button or Escape.
 
 ## Make it yours
 

@@ -17,7 +17,14 @@
           <span class="wordmark-mark" aria-hidden="true">✳</span>
           <span>A little something</span>
         </a>
-        <span class="topbar-note">Made with friendship &amp; care</span>
+        <div class="topbar-actions">
+          <span class="topbar-note">Made with friendship &amp; care</span>
+          <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" aria-describedby="music-status">
+            <span class="music-icon" id="music-icon" aria-hidden="true">▶</span>
+            <span id="music-label">Play birthday music</span>
+          </button>
+          <span class="visually-hidden" id="music-status" role="status" aria-live="polite">Birthday music is ready when you are.</span>
+        </div>
       </header>
 
       <main>
@@ -140,6 +147,9 @@
         <figcaption class="viewer-caption" id="viewer-caption"></figcaption>
       </figure>
     </dialog>
+    <video class="soundtrack-source" id="birthday-music" preload="none" playsinline aria-hidden="true" tabindex="-1">
+      <source src="assets/background-music-birthday.mp4" type="video/mp4">
+    </video>
     <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
   </body>
 </html>

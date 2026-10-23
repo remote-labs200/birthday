@@ -33,6 +33,11 @@ const closingMessage = document.querySelector("#closing-message");
 const signoff = document.querySelector("#signoff");
 const scrapbook = document.querySelector("#scrapbook");
 const closing = document.querySelector("#closing");
+const birthdayMusic = document.querySelector("#birthday-music");
+const musicToggle = document.querySelector("#music-toggle");
+const musicLabel = document.querySelector("#music-label");
+const musicIcon = document.querySelector("#music-icon");
+const musicStatus = document.querySelector("#music-status");
 
 const ambientGlitter = document.querySelector("#ambient-glitter");
 const glitterColors = ["#e7b66e", "#eaa8a0", "#dcd2ec", "#cbd9cb"];
@@ -53,6 +58,55 @@ for (let index = 0; index < 24; index += 1) {
 heroName.textContent = birthdayDetails.name;
 closingMessage.textContent = birthdayDetails.closingMessage;
 signoff.textContent = `${birthdayDetails.signoff} ${birthdayDetails.sender}`;
+
+musicToggle.addEventListener("click", async () => {
+  if (!birthdayMusic.paused) {
+    birthdayMusic.pause();
+    return;
+  }
+
+  musicStatus.textContent = "Loading birthday music...";
+
+  try {
+    await birthdayMusic.play();
+  } catch (error) {
+    musicToggle.setAttribute("aria-pressed", "false");
+    musicLabel.textContent = "Play birthday music";
+    musicIcon.textContent = "▶";
+    musicStatus.textContent = "Birthday music couldn't be played. Check the MP4 file and try again.";
+    console.error("Unable to play the birthday soundtrack.", error);
+  }
+});
+
+birthdayMusic.addEventListener("playing", () => {
+  musicToggle.setAttribute("aria-pressed", "true");
+  musicLabel.textContent = "Pause birthday music";
+  musicIcon.textContent = "Ⅱ";
+  musicStatus.textContent = "Birthday music is playing.";
+});
+
+birthdayMusic.addEventListener("pause", () => {
+  musicToggle.setAttribute("aria-pressed", "false");
+  musicLabel.textContent = "Play birthday music";
+  musicIcon.textContent = "▶";
+  if (!birthdayMusic.ended) {
+    musicStatus.textContent = "Birthday music is paused.";
+  }
+});
+
+birthdayMusic.addEventListener("ended", () => {
+  musicToggle.setAttribute("aria-pressed", "false");
+  musicLabel.textContent = "Play birthday music";
+  musicIcon.textContent = "▶";
+  musicStatus.textContent = "Birthday music has finished.";
+});
+
+birthdayMusic.addEventListener("error", () => {
+  musicToggle.setAttribute("aria-pressed", "false");
+  musicLabel.textContent = "Play birthday music";
+  musicIcon.textContent = "▶";
+  musicStatus.textContent = "Birthday music couldn't be loaded. Check the MP4 file and try again.";
+});
 
 for (const [index, memory] of birthdayDetails.memories.entries()) {
   const card = document.createElement("article");
